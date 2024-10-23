@@ -151,8 +151,8 @@ class FileViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.Gener
         
         
         final_video_public_id = uploaded_video_response.get('public_id')
-        audio_public_id = 'grito_hombre_swxk8c'
-        image_public_id = '1_cb8fzd'
+        audio_public_id = 'grito_hombre_i9tuws'
+        image_public_id = 'maxresdefault_dkqvft'
         
         # Generar URL con texto, audio e imagen
         final_url = cloudinary.utils.cloudinary_url(final_video_public_id, 
