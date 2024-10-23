@@ -7,6 +7,7 @@ import cloudinary
 import cloudinary.api
 import cloudinary.uploader
 import random
+from decouple import config
 
 
 class FileViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet , mixins.RetrieveModelMixin):
@@ -95,6 +96,12 @@ class FileViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.Gener
     
     @action(detail=True, methods=['post'], url_path='effects-video-screamer')
     def apply_video_transformations(self, request, pk=None):
+        audios = config('CLOUDINARY_AUDIOS_IDS', cast=lambda v: [s.strip() for s in v.split(',')])
+        images = config('CLOUDINARY_IMAGES_IDS', cast=lambda v: [s.strip() for s in v.split(',')])
+
+        # Seleccionar un audio y una imagen aleatorios
+        audio_public_id = random.choice(audios)
+        image_public_id = random.choice(images)
         video_file = self.get_object()
         aspect_ratio = request.data[0].get('aspect_ratio')
         
@@ -151,8 +158,9 @@ class FileViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.Gener
         
         
         final_video_public_id = uploaded_video_response.get('public_id')
-        audio_public_id = 'grito_hombre_i9tuws'
-        image_public_id = 'maxresdefault_dkqvft'
+        
+        
+        print(image_public_id)
         
         # Generar URL con texto, audio e imagen
         final_url = cloudinary.utils.cloudinary_url(final_video_public_id, 
@@ -162,7 +170,10 @@ class FileViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.Gener
                     'overlay': f'image:{image_public_id}',
                     'gravity': 'center',
                     'start_offset': "3.0", 
-                    'end_offset': "3.5"
+                    'end_offset': "3.5",
+                    'width': width,
+                    'height': height,
+                    'crop': 'fill',
                 },
                 {
                     'overlay': f'audio:{audio_public_id}',
@@ -171,9 +182,11 @@ class FileViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.Gener
             ]
         )[0] + '.webm'
         
-        final_video_upload = cloudinary.uploader.upload(final_url, resource_type="video")
+        print(final_url)
+        
+        #final_video_upload = cloudinary.uploader.upload(final_url, resource_type="video")
         response_data = {
-            'url_video': final_video_upload.get('secure_url'),
+            'url_video': final_url,
         }
         return Response(response_data)
 
