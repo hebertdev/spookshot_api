@@ -97,7 +97,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
     
     @action(methods=['get'], detail=True)
     def posts(self, request, *args, **kwargs):
-        username = request.user
+        username = self.get_object()
         posts = Post.objects.filter(user=username).order_by('-created')
         data = PostModelSerializer(posts, context={'request': request} , many=True).data
         return Response(data)
