@@ -8,5 +8,4 @@ urlpatterns = [
     path('api/', include(('users.urls', 'users'), namespace="users")),
     path('api/', include(('files.urls', 'files'), namespace="files")),
     path('api/', include(('posts.urls', 'posts'), namespace="posts")),
-    path('api/', include(('cloudinary_api.urls', 'cloudinary_api'), namespace="cloudinary_api")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
