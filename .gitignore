@@ -1,0 +1,16 @@
+env
+db.sqlite3
+migrations
+/media/
+/static/
+__pycache__
+
+
+.env
+.vscode
+
+/.vscode/
+/vscode/
+/vscode/settings.json
+/vscode/keybindings.json
+/vscode/snippets/
