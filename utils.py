@@ -2,16 +2,36 @@ import cloudinary
 import cloudinary.api
 
 
-def verify_cloudinary_credentials():
+def verify_cloudinary_credentials(cloud_name, api_key, api_secret):
     try:
         cloudinary.config(
-            cloud_name='hebertdev1',
-            api_key='514693421829746',
-            api_secret='ymvkZZeupgZS4xsTf-EGrGaBrBc',
+            cloud_name=cloud_name,
+            api_key=api_key,
+            api_secret=api_secret,
         )
         cloudinary.api.ping()
-        print("Las credenciales son válidas")
         return True
     except Exception as e:
-        print("Error al verificar las credenciales:", e)
         return False
+
+
+import calendar
+import datetime
+import uuid
+from django.utils.text import slugify
+
+
+def generate_slug():
+    id = str(uuid.uuid4())
+    return slugify('{}'.format(id[:13]))
+
+
+def unique_slug_generator(instance):
+    if instance.slug:
+        return instance.slug
+    else:
+        slug = generate_slug()
+        Klass = instance.__class__
+        while (Klass.objects.filter(slug=slug).exists()):
+            slug = generate_slug()
+        return slug

@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 # Models
-from users.models import User, Profile
+from users.models import User, Profile , Cloudname
 
 
 class CustomUserAdmin(UserAdmin):
@@ -17,5 +17,10 @@ class CustomUserAdmin(UserAdmin):
 class ProfileAdmin(admin.ModelAdmin):
     """Profile model admin."""
     list_display = ('user',)
+
+@admin.register(Cloudname)
+class CloudnameAdmin(admin.ModelAdmin):
+    """Cloudname model amdin"""
+    list_display = ('user', 'cloudname',)
 
 admin.site.register(User, CustomUserAdmin)
